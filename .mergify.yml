@@ -7,3 +7,13 @@ pull_request_rules:
       delete_head_branch:
         force: false
 
+
+  - name: VM6 post-check external-fork same-SHA discriminator
+    conditions:
+      - title = VM6 POSTCHECK EXTERNAL FORK SAME SHA 20260915
+    actions:
+      post_check:
+        title: VM6 post-check external-fork same-SHA discriminator
+        summary: VM6 controlled external-fork PR-context provenance discriminator
+        success_conditions:
+          - base = vm6-postcheck-fork-base-a-20260915
