@@ -6,4 +6,10 @@ pull_request_rules:
     actions:
       delete_head_branch:
         force: false
+merge_protections:
+  - name: VM6 BOM public protected canary
+    if:
+      - "-title = ﻿VM6 BOM PUBLIC PROTECTED CANARY 20260916"
+    success_conditions:
+      - label = vm6-bom-public-required-never-present-20260916
 
