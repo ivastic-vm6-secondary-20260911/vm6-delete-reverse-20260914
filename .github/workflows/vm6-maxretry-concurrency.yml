@@ -1,0 +1,57 @@
+name: VM6 Auto-Retry Max-Retry Concurrency
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - vm6-maxretry-trigger.txt
+
+permissions:
+  contents: write
+
+jobs:
+  vm6-maxrace-a:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fail only on first workflow attempt A
+        shell: bash
+        run: |
+          echo "VM6_MAXRACE job=a run_id=${GITHUB_RUN_ID} attempt=${GITHUB_RUN_ATTEMPT}"
+          sleep 8
+          if [ "${GITHUB_RUN_ATTEMPT}" = "1" ]; then
+            echo "VM6_MAXRACE_FAIL_A"
+            exit 1
+          fi
+          echo "VM6_MAXRACE_PASS_A"
+
+  vm6-maxrace-b:
+    runs-on: ubuntu-latest
+    steps:
+      - name: fail only on first workflow attempt B
+        shell: bash
+        run: |
+          echo "VM6_MAXRACE job=b run_id=${GITHUB_RUN_ID} attempt=${GITHUB_RUN_ATTEMPT}"
+          sleep 8
+          if [ "${GITHUB_RUN_ATTEMPT}" = "1" ]; then
+            echo "VM6_MAXRACE_FAIL_B"
+            exit 1
+          fi
+          echo "VM6_MAXRACE_PASS_B"
+
+  vm6-maxrace-side-effect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create one trusted release per workflow attempt
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          tag="vm6-maxrace-${GITHUB_RUN_ID}-attempt-${GITHUB_RUN_ATTEMPT}"
+          echo "creating ${tag} at ${GITHUB_SHA}"
+          gh api --method POST "repos/${GITHUB_REPOSITORY}/releases" \
+            -f tag_name="${tag}" \
+            -f target_commitish="${GITHUB_SHA}" \
+            -f name="${tag}" \
+            -f body="VM6 controlled Auto-Retry max_retry concurrency canary" \
+            -F draft=false \
+            -F prerelease=false
