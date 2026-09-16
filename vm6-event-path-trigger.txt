@@ -1,0 +1,1 @@
+vm6 event path persistence trigger
