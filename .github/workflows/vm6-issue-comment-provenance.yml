@@ -1,0 +1,25 @@
+name: VM6 Issue Comment Provenance 20260917
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  vm6-issue-comment-provenance:
+    if: github.event.issue.pull_request && startsWith(github.event.comment.body, 'VM6_ISSUE_COMMENT_PROVENANCE_Q7R4')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print trusted event provenance only
+        shell: bash
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+        run: |
+          echo "EVENT_NAME=${GITHUB_EVENT_NAME}"
+          echo "ACTOR=${GITHUB_ACTOR}"
+          echo "SHA=${GITHUB_SHA}"
+          echo "REF=${GITHUB_REF}"
+          echo "HEAD_REF=${GITHUB_HEAD_REF}"
+          echo "BASE_REF=${GITHUB_BASE_REF}"
+          echo "REPOSITORY=${GITHUB_REPOSITORY}"
+          echo "COMMENT_BODY=${COMMENT_BODY}"
