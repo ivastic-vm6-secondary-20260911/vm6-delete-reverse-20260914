@@ -7,3 +7,13 @@ pull_request_rules:
       delete_head_branch:
         force: false
 
+queue_rules:
+  - name: vm6-headfresh-retry
+    queue_conditions:
+      - base = vm6-headfresh-base-20260916
+    merge_conditions:
+      - check-success = vm6-headfresh-gate
+    batch_size: 1
+    batch_max_wait_time: 0
+    max_checks_retries: 1
+    merge_method: merge
