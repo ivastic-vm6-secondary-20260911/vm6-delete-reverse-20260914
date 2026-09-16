@@ -1,1 +1,1 @@
-PASS
+FAIL-AUTO-1
