@@ -1,0 +1,10 @@
+name: VM6 Copy Workflow Canary 20260917
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  canary:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'VM6 controlled copy workflow canary 20260917'
