@@ -23,3 +23,5 @@ pull_request_rules:
     actions:
       comment:
         message: VM6_CFG4760_GUARD_BYPASS_H7K2
+
+# VM6_CFG4760_HEAD_CHANGE_H7K2
