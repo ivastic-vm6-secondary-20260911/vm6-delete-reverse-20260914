@@ -16,6 +16,13 @@ pull_request_rules:
         branches:
           - vm6-hidden-body-target-20260916
 
+  - name: VM6 queued-at generation probe 20260917
+    conditions:
+      - title = VM6 queued-at generation probe 20260917
+    actions:
+      queue:
+        name: vm6-queued-at-generation
+
 commands_restrictions:
   queue:
     conditions:
