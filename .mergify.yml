@@ -15,3 +15,26 @@ pull_request_rules:
       copy:
         branches:
           - vm6-hidden-body-target-20260916
+
+  - name: VM6 queued-at generation probe 20260917
+    conditions:
+      - title = VM6 queued-at generation probe 20260917
+    actions:
+      queue:
+        name: vm6-queued-at-generation
+
+commands_restrictions:
+  queue:
+    conditions:
+      - sender-permission >= write
+
+merge_queue:
+  max_parallel_checks: 1
+  status_comments: none
+
+queue_rules:
+  - name: vm6-queued-at-generation
+    queue_conditions: []
+    merge_conditions:
+      - check-success = vm6-never-merge-queued-at-20260917
+    merge_method: fast-forward
