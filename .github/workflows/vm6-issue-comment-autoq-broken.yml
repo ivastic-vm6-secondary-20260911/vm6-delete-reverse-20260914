@@ -1,0 +1,27 @@
+name: VM6 Issue Comment AutoQ Broken 20260917
+on:
+  issue_comment:
+    types: [created]
+permissions:
+  contents: read
+  pull-requests: read
+jobs:
+  report:
+    if: >-
+      github.event.issue.pull_request != null &&
+      startsWith(github.event.comment.body, 'VM6_AUTOQ_BROKEN_Q9M5')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install published client
+        run: python -m pip install --disable-pip-version-check -q 'pytest==9.1.1' 'pytest-mergify==2026.9.11.2'
+      - name: Create trusted deterministic failing test
+        shell: bash
+        run: |
+          cat > test_vm6_issue_comment_autoq_broken.py <<'PY'
+          def test_vm6_issue_comment_autoq_broken_20260917_q9m5():
+              assert False, 'VM6 controlled deterministic failure'
+          PY
+      - name: Report through Test Insights
+        env:
+          MERGIFY_TOKEN: ${{ secrets.VM6_AUTOQ_CHAIN_TOKEN }}
+        run: pytest -q -s test_vm6_issue_comment_autoq_broken.py
